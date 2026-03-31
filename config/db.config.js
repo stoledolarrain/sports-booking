@@ -1,8 +1,9 @@
 const { Sequelize } = require("sequelize");
 
-// Configuracion SQL
+// Config SQLite
 const sequelize = new Sequelize({
-  /* Vamos a hacer la configuracion de la base de datos*/
+  dialect: "sqlite",
+  storage: "database.sqlite",
 });
 
 sequelize
