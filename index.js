@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 let ejs = require("ejs");
 const db = require("./models");
 const session = require("express-session");
+const { sha1Encode } = require("./utils/text.utils");
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,8 +30,21 @@ db.sequelize
   .sync({
     //force: true // drop tables and recreate
   })
-  .then(() => {
+  .then(async() => {
     console.log("db resync");
+    const adminEmail = "admin@ace.com";
+    const adminExists = await db.usuario.findOne({ where: { email: adminEmail } });
+
+    if (!adminExists) {
+      const encodedPassword = sha1Encode("administrador");
+      await db.usuario.create({
+        nombre: "Administrador",
+        email: adminEmail,
+        contrasena: encodedPassword,
+        rol: "admin",
+      });
+      console.log("Admin creado por defecto: admin@ace.com / admin");
+    }
   });
 
 app.listen(port, () => {

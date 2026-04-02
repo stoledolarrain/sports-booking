@@ -25,6 +25,7 @@ module.exports = (app, db) => {
     req.session.user = {
       id: usuario.id,
       email: usuario.email,
+      rol: usuario.rol,
     };
     res.redirect("/");
   });
