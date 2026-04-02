@@ -1,0 +1,183 @@
+<%- include('../components/header.ejs') %>
+
+<div class="container my-5">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="fw-bold">Gestión de Canchas</h2>
+      <p class="text-muted">Crea las canchas físicas, asigna sus precios y su categoría.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-success text-white fw-bold">
+          Nueva Cancha
+        </div>
+        <div class="card-body">
+          <form action="/admin/canchas" method="post">
+            <div class="mb-3">
+              <label for="nombre" class="form-label text-secondary fw-semibold">Nombre de la Cancha</label>
+              <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej. Cancha 1 - Deporte" required>
+            </div>
+            <div class="mb-3">
+              <label for="tipo_id" class="form-label text-secondary fw-semibold">Tipo de Cancha</label>
+              <select class="form-select" id="tipo_id" name="tipo_id" required>
+                <option value="" selected disabled>Selecciona una categoría...</option>
+                <% tipos.forEach(tipo => { %>
+                  <option value="<%= tipo.id %>"><%= tipo.nombre %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="precio_por_hora" class="form-label text-secondary fw-semibold">Precio por Hora (Bs)</label>
+              <input type="number" class="form-control" id="precio_por_hora" name="precio_por_hora" placeholder="Ej. 150" min="0" required>
+            </div>
+            <div class="mb-4">
+              <label for="estado" class="form-label text-secondary fw-semibold">Estado</label>
+              <select class="form-select" id="estado" name="estado" required>
+                <option value="activa" selected>Disponible</option>
+                <option value="inactiva">No Disponible</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-success w-100 fw-bold shadow-sm">Guardar Cancha</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-0 table-responsive">
+          <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+              <tr>
+                <th class="ps-4">Nombre</th>
+                <th>Tipo</th>
+                <th>Precio/Hr</th>
+                <th>Estado</th>
+                <th class="text-end pe-4">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (canchas.length > 0) { %>
+                <% canchas.forEach(cancha => { %>
+                  <tr>
+                    <td class="ps-4 fw-bold text-dark"><%= cancha.nombre %></td>
+                    <td>
+                      <span class="badge bg-secondary">
+                        <%= cancha.TipoCancha ? cancha.TipoCancha.nombre : 'Sin Tipo' %>
+                      </span>
+                    </td>
+                    <td class="text-success fw-bold"><%= cancha.precio_por_hora %></td>
+                    <td>
+                      <% if (cancha.estado === 'activa') { %>
+                        <span class="badge bg-success bg-opacity-25 text-success border border-success">Disponible</span>
+                      <% } else { %>
+                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger">No Disponible</span>
+                      <% } %>
+                    </td>
+
+                    <td class="text-end pe-4">
+                      
+                      <button type="button" class="btn btn-sm btn-outline-primary fw-bold me-1" data-bs-toggle="modal" data-bs-target="#modalHorarios<%= cancha.id %>">
+                        Horarios
+                      </button>
+
+                      <form action="/admin/canchas/delete/<%= cancha.id %>" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Seguro que deseas eliminar esta cancha?');">
+                          Eliminar
+                        </button>
+                      </form>
+
+                      <div class="modal fade text-start" id="modalHorarios<%= cancha.id %>" tabindex="-1" aria-labelledby="modalLabel<%= cancha.id %>" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                              <h5 class="modal-title fw-bold" id="modalLabel<%= cancha.id %>">Horarios Disponibles - <%= cancha.nombre %></h5>
+                              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                              
+                              <form action="/admin/canchas/<%= cancha.id %>/horarios" method="post" class="row g-3 mb-4 pb-4 border-bottom">
+                                <div class="col-md-4">
+                                  <label class="form-label text-secondary fw-semibold small">Fecha</label>
+                                  <input type="date" class="form-control" name="fecha" required>
+                                </div>
+                                <div class="col-md-3">
+                                  <label class="form-label text-secondary fw-semibold small">Desde (Hora)</label>
+                                  <input type="time" class="form-control" name="hora_inicio" required>
+                                </div>
+                                <div class="col-md-3">
+                                  <label class="form-label text-secondary fw-semibold small">Hasta (Hora)</label>
+                                  <input type="time" class="form-control" name="hora_fin" required>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                  <button type="submit" class="btn btn-primary w-100 fw-bold">Añadir</button>
+                                </div>
+                              </form>
+
+                              <h6 class="fw-bold mb-3">Horarios Registrados</h6>
+                              <% if (cancha.Horarios && cancha.Horarios.length > 0) { %>
+                                <div class="table-responsive">
+                                  <table class="table table-sm table-bordered align-middle">
+                                    <thead class="table-light">
+                                      <tr>
+                                        <th>Fecha</th>
+                                        <th>De</th>
+                                        <th>A</th>
+                                        <th>Estado</th>
+                                        <th class="text-center">Eliminar</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <% cancha.Horarios.forEach(horario => { %>
+                                        <tr>
+                                          <td><%= horario.fecha %></td>
+                                          <td><%= horario.hora_inicio %></td>
+                                          <td><%= horario.hora_fin %></td>
+                                          <td>
+                                            <% if(horario.disponible) { %>
+                                              <span class="badge bg-success">Libre</span>
+                                            <% } else { %>
+                                              <span class="badge bg-secondary">Reservado</span>
+                                            <% } %>
+                                          </td>
+                                          <td class="text-center">
+                                            <form action="/admin/horarios/delete/<%= horario.id %>" method="post" style="display:inline;">
+                                              <button type="submit" class="btn btn-sm btn-danger py-0 px-2 fw-bold" onclick="return confirm('¿Borrar este horario?');">X</button>
+                                            </form>
+                                          </td>
+                                        </tr>
+                                      <% }) %>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              <% } else { %>
+                                <p class="text-muted small mb-0">No hay horarios registrados para esta cancha aún.</p>
+                              <% } %>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" class="text-center text-muted py-4">No hay canchas registradas.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -6,5 +6,6 @@ exports.checkUser = (req, res, next) => {
     console.log("Usuario logueado:", req.session.user);
     res.locals.userEmail = req.session.user.email;
     res.locals.userId = req.session.user.id;
+    res.locals.userRol = req.session.user.rol;
     next();
 }
