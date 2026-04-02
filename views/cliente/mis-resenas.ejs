@@ -1,0 +1,23 @@
+<%- include('../components/header.ejs') %>
+<div class="container my-5">
+  <h2 class="fw-bold text-center mb-4">Mi Historial de Reseñas</h2>
+  <div class="row g-3 justify-content-center">
+    <% if (resenas.length > 0) { %>
+      <% resenas.forEach(r => { %>
+        <div class="col-md-6">
+          <div class="card shadow-sm border-0 border-start border-warning border-4">
+            <div class="card-body">
+              <h5 class="fw-bold text-primary"><%= r.Cancha ? r.Cancha.nombre : 'Cancha' %></h5>
+              <div class="mb-2">
+                <% for(let i=0; i<r.calificacion; i++) { %> <span class="text-warning">★</span> <% } %>
+              </div>
+              <p class="text-muted italic">"<%= r.comentario %>"</p>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p class="text-center">Aún no has dejado reseñas.</p>
+    <% } %>
+  </div>
+</div>

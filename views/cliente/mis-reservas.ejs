@@ -1,0 +1,77 @@
+<%- include('../components/header.ejs') %>
+
+<div class="container my-5">
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <h2 class="fw-bold">Mis Reservas</h2>
+      <p class="text-muted">Aquí puedes ver el historial de tus canchas apartadas y calificar tu experiencia.</p>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-0 table-responsive">
+          <table class="table table-hover mb-0 align-middle text-center">
+            <thead class="table-dark">
+              <tr>
+                <th>Cancha</th>
+                <th>Fecha</th>
+                <th>Horario</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (reservas && reservas.length > 0) { %>
+                <% reservas.forEach(reserva => { %>
+                  <tr>
+                    <td class="fw-bold text-primary">
+                      <%= reserva.Horario && reserva.Horario.Cancha ? reserva.Horario.Cancha.nombre : 'Cancha no disponible' %>
+                    </td>
+                    <td><%= reserva.Horario ? reserva.Horario.fecha : '--' %></td>
+                    <td>
+                      <%= reserva.Horario ? reserva.Horario.hora_inicio + ' - ' + reserva.Horario.hora_fin : '--' %>
+                    </td>
+                    <td>
+                      <% if (reserva.estado === 'confirmada') { %>
+                        <span class="badge bg-success">Confirmada</span>
+                      <% } else if (reserva.estado === 'completada') { %>
+                        <span class="badge bg-info text-dark">Completada</span>
+                      <% } else { %>
+                        <span class="badge bg-danger">Cancelada</span>
+                      <% } %>
+                    </td>
+                    <td>
+                      <% if (reserva.estado === 'confirmada') { %>
+                        <form action="/reservas/cancelar/<%= reserva.id %>" method="post" style="display:inline;">
+                          <button type="submit" class="btn btn-sm btn-outline-danger fw-bold" onclick="return confirm('¿Seguro que deseas cancelar esta reserva?');">
+                            Cancelar Reserva
+                          </button>
+                        </form>
+                      <% } else if (reserva.estado === 'completada') { %>
+                        <a href="/cliente/resena/<%= reserva.id %>" class="btn btn-sm btn-warning fw-bold shadow-sm">
+                          Dejar Reseña
+                        </a>
+                      <% } else { %>
+                        <span class="text-muted small">Finalizada</span>
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" class="py-5 text-muted">No tienes ninguna reserva todavía.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
