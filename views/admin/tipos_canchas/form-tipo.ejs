@@ -1,0 +1,30 @@
+<%- include('../../components/header.ejs') %>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+          <h3 class="fw-bold text-dark mb-4">
+            <%= typeof(tipo) !== 'undefined' && tipo.id ? 'Editar Tipo de Cancha' : 'Nuevo Tipo de Cancha' %>
+          </h3>
+
+          <%- include('../../components/error-panel.ejs') %>
+
+          <form action="/admin/tipos-cancha/<%= typeof(tipo) !== 'undefined' && tipo.id ? 'editar/' + tipo.id : 'crear' %>" method="post">
+            <div class="mb-4">
+              <label class="form-label fw-semibold text-secondary" for="nombre">Nombre del Deporte/Tipo</label>
+              <input class="form-control form-control-lg" type="text" name="nombre" id="nombre" value="<%= typeof(tipo) !== 'undefined' ? tipo.nombre : '' %>" required placeholder="Ej: Fútbol 5, Pádel..." />
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm">Guardar</button>
+              <a href="/admin/tipos-cancha" class="btn btn-light btn-lg text-secondary">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../components/footer.ejs') %>

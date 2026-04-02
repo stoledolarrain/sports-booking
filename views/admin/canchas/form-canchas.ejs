@@ -1,0 +1,58 @@
+<%- include('../../components/header.ejs') %>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+          <h3 class="fw-bold text-dark mb-4">
+            <%= typeof(cancha) !== 'undefined' && cancha.id ? 'Editar Cancha' : 'Nueva Cancha' %>
+          </h3>
+
+          <%- include('../../components/error-panel.ejs') %>
+
+          <form action="/admin/canchas/<%= typeof(cancha) !== 'undefined' && cancha.id ? 'editar/' + cancha.id : 'crear' %>" method="post">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold text-secondary" for="nombre">Nombre de la Cancha</label>
+                <input class="form-control" type="text" name="nombre" id="nombre" value="<%= typeof(cancha) !== 'undefined' ? cancha.nombre : '' %>" required />
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold text-secondary" for="tipo_id">Tipo de Cancha</label>
+                <select class="form-select" name="tipo_id" id="tipo_id" required>
+                  <option value="" disabled <%= typeof(cancha) === 'undefined' ? 'selected' : '' %>>Seleccione un tipo...</option>
+                  <% tipos.forEach(tipo => { %>
+                    <option value="<%= tipo.id %>" <%= typeof(cancha) !== 'undefined' && cancha.tipo_id === tipo.id ? 'selected' : '' %>>
+                      <%= tipo.nombre %>
+                    </option>
+                  <% }) %>
+                </select>
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label fw-semibold text-secondary" for="precio_por_hora">Precio por Hora ($)</label>
+                <input class="form-control" type="number" step="0.01" name="precio_por_hora" id="precio_por_hora" value="<%= typeof(cancha) !== 'undefined' ? cancha.precio_por_hora : '' %>" required />
+              </div>
+
+              <div class="col-md-6 mb-4">
+                <label class="form-label fw-semibold text-secondary" for="estado">Estado</label>
+                <select class="form-select" name="estado" id="estado" required>
+                  <option value="activa" <%= typeof(cancha) !== 'undefined' && cancha.estado === 'activa' ? 'selected' : '' %>>Activa</option>
+                  <option value="inactiva" <%= typeof(cancha) !== 'undefined' && cancha.estado === 'inactiva' ? 'selected' : '' %>>Inactiva</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+              <a href="/admin/canchas" class="btn btn-light text-secondary">Cancelar</a>
+              <button type="submit" class="btn btn-success fw-bold px-4">Guardar Cancha</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../components/footer.ejs') %>
