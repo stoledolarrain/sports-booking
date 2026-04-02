@@ -11,7 +11,6 @@ const { sha1Encode } = require("./utils/text.utils");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Configuración de archivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
 
 //configuracion de session
@@ -22,7 +21,6 @@ app.use(
   }),
 );
 
-//cargamos las rutas (Controladores)
 require("./controllers")(app, db);
 
 //sincronizamos la base de datos y arrancamos el servidor
@@ -30,10 +28,12 @@ db.sequelize
   .sync({
     //force: true // drop tables and recreate
   })
-  .then(async() => {
+  .then(async () => {
     console.log("db resync");
     const adminEmail = "admin@ace.com";
-    const adminExists = await db.usuario.findOne({ where: { email: adminEmail } });
+    const adminExists = await db.usuario.findOne({
+      where: { email: adminEmail },
+    });
 
     if (!adminExists) {
       const encodedPassword = sha1Encode("administrador");
