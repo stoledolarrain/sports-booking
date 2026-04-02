@@ -1,3 +1,5 @@
+const { sha1Encode } = require("../utils/text.utils");
+
 module.exports = (app, db) => {
   app.get("/login", (req, res) => {
     res.render("auth/form-login");
@@ -18,7 +20,7 @@ module.exports = (app, db) => {
 
     const encodedPassword = require("../utils/text.utils").sha1Encode(password);
 
-    if (encodedPassword !== usuario.password) {
+    if (encodedPassword !== usuario.contrasena) {
       return res.render("auth/form-login", { error: "Contraseña incorrecta" });
     }
 
@@ -27,5 +29,35 @@ module.exports = (app, db) => {
       email: usuario.email,
     };
     res.redirect("/");
+  });
+
+  app.get("/register", (req, res) => {
+    res.render("auth/form-register");
+  });
+  app.post("/register", async (req, res) => {
+    const { nombre, email, password } = req.body;
+
+    const existingUser = await db.usuario.findOne({ where: { email } });
+    if (existingUser) {
+      return res.render("auth/form-register", {
+        error: "El email ya está registrado",
+      });
+    }
+
+    const encodedPassword = sha1Encode(password);
+
+    await db.usuario.create({
+      nombre: nombre,
+      email: email,
+      contrasena: encodedPassword,
+      rol: "cliente",
+    });
+
+    res.redirect("/login");
+  });
+
+  app.get("/logout", (req, res) => {
+    req.session.user = null;
+    res.redirect("/login");
   });
 };

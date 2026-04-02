@@ -37,19 +37,32 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link active" href="/">Inicio</a>
+              <a class="nav-link" href="/">Inicio</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#canchas">Nuestras Canchas</a>
             </li>
+            
+            <% if (locals.userId) { %>
             <li class="nav-item">
-              <a class="nav-link" href="#">Iniciar Sesión</a>
+                <a class="nav-link" href="#">Realizar Reserva</a>
             </li>
             <li class="nav-item">
-              <a class="btn btn-success ms-2" href="#">Regístrate</a>
+                <span class="nav-link text-secondary"><%= locals.userEmail %></span>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-danger" href="/logout">Cerrar Sesión</a>
+            </li>
+            <% } else { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Iniciar Sesión</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-success ms-2" href="/register">Regístrate</a>
+            </li>
+            <% } %>
+
           </ul>
         </div>
       </div>
     </nav>
-
