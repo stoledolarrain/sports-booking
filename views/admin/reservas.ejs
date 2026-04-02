@@ -20,9 +20,20 @@
           <% reservas.forEach(reserva => { %>
             <tr>
               <td>#<%= reserva.id %></td>
-              <td><strong><%= reserva.Usuario.email %></strong></td>
-              <td><%= reserva.Horario.Cancha.nombre %></td>
-              <td><%= reserva.Horario.fecha %> <br> <small><%= reserva.Horario.hora_inicio %></small></td>
+              <td>
+                <strong><%= reserva.Usuario ? reserva.Usuario.email : 'Usuario no encontrado' %></strong>
+              </td>
+              <td>
+                <%= (reserva.Horario && reserva.Horario.Cancha) ? reserva.Horario.Cancha.nombre : 'Cancha no disponible' %>
+              </td>
+              <td>
+                <% if (reserva.Horario) { %>
+                  <%= reserva.Horario.fecha %> <br> 
+                  <small><%= reserva.Horario.hora_inicio %> - <%= reserva.Horario.hora_fin %></small>
+                <% } else { %>
+                  <span class="text-muted small">Sin horario</span>
+                <% } %>
+              </td>
               <td>
                 <% if (reserva.estado === 'confirmada') { %>
                   <span class="badge bg-success">CONFIRMADA</span>

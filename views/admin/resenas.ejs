@@ -2,25 +2,42 @@
 <div class="container my-5">
   <h2 class="fw-bold mb-4">Control de Calidad (Reseñas)</h2>
   <div class="card shadow-sm border-0">
-    <table class="table table-hover align-middle mb-0">
-      <thead class="table-dark">
-        <tr>
-          <th>Cliente</th>
-          <th>Cancha</th>
-          <th>Calificación</th>
-          <th>Comentario</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% resenas.forEach(r => { %>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
           <tr>
-            <td><strong><%= r.Usuario.email %></strong></td>
-            <td><%= r.Cancha.nombre %></td>
-            <td class="text-warning fw-bold"><%= r.calificacion %> ★</td>
-            <td><%= r.comentario %></td>
+            <th>Cliente</th>
+            <th>Cancha</th>
+            <th>Calificación</th>
+            <th>Comentario</th>
           </tr>
-        <% }) %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% resenas.forEach(r => { %>
+            <tr>
+              <td>
+                <strong><%= r.Usuario ? r.Usuario.email : 'Usuario eliminado' %></strong>
+              </td>
+              <td>
+                <%= r.Cancha ? r.Cancha.nombre : 'Cancha no disponible' %>
+              </td>
+              <td class="text-warning fw-bold">
+                <% for(let i=0; i < r.calificacion; i++) { %>★<% } %>
+                <span class="text-muted small ms-1">(<%= r.calificacion %>)</span>
+              </td>
+              <td>
+                <span class="text-muted italic">
+                  <%= r.comentario ? `"${r.comentario}"` : 'Sin comentario' %>
+                </span>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
