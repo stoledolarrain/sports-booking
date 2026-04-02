@@ -9,11 +9,11 @@ module.exports = (sequelize) => {
         allowNull: false,
         validate: {
           min: 1,
-          max: 5, // Valida que no pongan números fuera del 1 al 5
+          max: 5,
         },
       },
       comentario: {
-        type: DataTypes.TEXT, // Usamos TEXT por si el comentario es largo
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },

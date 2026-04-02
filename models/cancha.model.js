@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       precio_por_hora: {
-        type: DataTypes.FLOAT, // Usamos FLOAT para precios con decimales
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       estado: {

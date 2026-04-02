@@ -1,5 +1,4 @@
 module.exports = (app, db) => {
-  // Como ya estamos en la carpeta controllers, solo llamamos al archivo directamente:
   require("./home.controller")(app);
   require("./auth.controller")(app, db);
 

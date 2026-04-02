@@ -1,6 +1,6 @@
 const { sequelize, Sequelize } = require("../config/db.config");
 
-// 1. Importamos todos los modelos
+//Importacion de todos los modelos
 const usuario = require("./usuario.model")(sequelize);
 const tipoCancha = require("./tipo_cancha.model")(sequelize);
 const cancha = require("./cancha.model")(sequelize);
@@ -34,7 +34,7 @@ resena.belongsTo(usuario, { foreignKey: "usuario_id" });
 cancha.hasMany(resena, { foreignKey: "cancha_id" });
 resena.belongsTo(cancha, { foreignKey: "cancha_id" });
 
-// 3. Exportamos todo
+// Exportamos todo
 module.exports = {
   usuario,
   tipoCancha,

@@ -5,11 +5,11 @@ module.exports = (sequelize) => {
     "Horario",
     {
       fecha: {
-        type: DataTypes.DATEONLY, // Solo guarda la fecha (YYYY-MM-DD)
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       hora_inicio: {
-        type: DataTypes.TIME, // Solo guarda la hora (HH:MM:SS)
+        type: DataTypes.TIME,
         allowNull: false,
       },
       hora_fin: {

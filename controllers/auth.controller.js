@@ -8,12 +8,10 @@ module.exports = (app, db) => {
   app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
-    // Recuerda que lo exportamos como db.usuario
     const usuario = await db.usuario.findOne({
       where: { email },
     });
 
-    // Esta validación debe ir DENTRO de la función app.post
     if (!usuario) {
       return res.render("auth/form-login", { error: "Usuario no encontrado" });
     }
