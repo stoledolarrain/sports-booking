@@ -20,7 +20,7 @@ ACE es una plataforma web completa diseñada para la gestión de complejos depor
 ##  Tecnologías Utilizadas
 
 * **Backend:** Node.js & Express.js
-* **Base de Datos:** MySQL con **Sequelize ORM**.
+* **Base de Datos:** SQLite **Sequelize ORM**.
 * **Frontend:** EJS (Template Engine) & Bootstrap 5 para el diseño responsivo.
 * **Sesiones:** Express-session para la gestión de autenticación.
 
