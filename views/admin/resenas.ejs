@@ -1,0 +1,26 @@
+<%- include('../components/header.ejs') %>
+<div class="container my-5">
+  <h2 class="fw-bold mb-4">Control de Calidad (Reseñas)</h2>
+  <div class="card shadow-sm border-0">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th>Cliente</th>
+          <th>Cancha</th>
+          <th>Calificación</th>
+          <th>Comentario</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% resenas.forEach(r => { %>
+          <tr>
+            <td><strong><%= r.Usuario.email %></strong></td>
+            <td><%= r.Cancha.nombre %></td>
+            <td class="text-warning fw-bold"><%= r.calificacion %> ★</td>
+            <td><%= r.comentario %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

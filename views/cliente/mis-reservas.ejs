@@ -4,7 +4,7 @@
   <div class="row mb-4">
     <div class="col-12 text-center">
       <h2 class="fw-bold">Mis Reservas</h2>
-      <p class="text-muted">Aquí puedes ver el historial de tus canchas apartadas.</p>
+      <p class="text-muted">Aquí puedes ver el historial de tus canchas apartadas y calificar tu experiencia.</p>
     </div>
   </div>
 
@@ -36,6 +36,8 @@
                     <td>
                       <% if (reserva.estado === 'confirmada') { %>
                         <span class="badge bg-success">Confirmada</span>
+                      <% } else if (reserva.estado === 'completada') { %>
+                        <span class="badge bg-info text-dark">Completada</span>
                       <% } else { %>
                         <span class="badge bg-danger">Cancelada</span>
                       <% } %>
@@ -47,15 +49,19 @@
                             Cancelar Reserva
                           </button>
                         </form>
+                      <% } else if (reserva.estado === 'completada') { %>
+                        <a href="/cliente/resena/<%= reserva.id %>" class="btn btn-sm btn-warning fw-bold shadow-sm">
+                          Dejar Reseña
+                        </a>
                       <% } else { %>
-                        <span class="text-muted small">Sin acciones</span>
+                        <span class="text-muted small">Finalizada</span>
                       <% } %>
                     </td>
                   </tr>
                 <% }) %>
               <% } else { %>
                 <tr>
-                  <td colspan="5" class="py-5 text-muted">No tienes ninguna reserva todavia.</td>
+                  <td colspan="5" class="py-5 text-muted">No tienes ninguna reserva todavía.</td>
                 </tr>
               <% } %>
             </tbody>

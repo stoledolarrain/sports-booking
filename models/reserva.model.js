@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
     "Reserva",
     {
       estado: {
-        type: DataTypes.ENUM("confirmada", "cancelada"),
+        type: DataTypes.ENUM("confirmada", "cancelada", "completada"),
         allowNull: false,
         defaultValue: "confirmada",
       },

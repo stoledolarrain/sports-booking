@@ -1,0 +1,68 @@
+<%- include('../components/header.ejs') %>
+
+<div class="container my-5">
+  <h2 class="fw-bold mb-4">Panel Global de Reservas</h2>
+  
+  <div class="card shadow-sm border-0">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Cancha</th>
+            <th>Fecha / Hora</th>
+            <th>Estado Actual</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% reservas.forEach(reserva => { %>
+            <tr>
+              <td>#<%= reserva.id %></td>
+              <td><strong><%= reserva.Usuario.email %></strong></td>
+              <td><%= reserva.Horario.Cancha.nombre %></td>
+              <td><%= reserva.Horario.fecha %> <br> <small><%= reserva.Horario.hora_inicio %></small></td>
+              <td>
+                <% if (reserva.estado === 'confirmada') { %>
+                  <span class="badge bg-success">CONFIRMADA</span>
+                <% } else if (reserva.estado === 'completada') { %>
+                  <span class="badge bg-info text-dark">COMPLETADA</span>
+                <% } else { %>
+                  <span class="badge bg-danger">CANCELADA</span>
+                <% } %>
+              </td>
+              <td class="text-center">
+                <% if (reserva.estado === 'confirmada') { %>
+                  <div class="d-flex justify-content-center gap-2">
+                    
+                    <form action="/admin/reservas/estado/<%= reserva.id %>" method="post">
+                      <input type="hidden" name="nuevo_estado" value="completada">
+                      <button type="submit" class="btn btn-sm btn-success fw-bold shadow-sm">
+                        Terminar
+                      </button>
+                    </form>
+
+                    <form action="/admin/reservas/estado/<%= reserva.id %>" method="post">
+                      <input type="hidden" name="nuevo_estado" value="cancelada">
+                      <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Seguro que deseas cancelar esta reserva?');">
+                        Cancelar
+                      </button>
+                    </form>
+
+                  </div>
+                <% } else { %>
+                  <span class="text-muted small fw-italic">Sin acciones pendientes</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
