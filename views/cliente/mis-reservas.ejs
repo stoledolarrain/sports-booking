@@ -27,11 +27,11 @@
                 <% reservas.forEach(reserva => { %>
                   <tr>
                     <td class="fw-bold text-primary">
-                      <%= reserva.Horario && reserva.Horario.Cancha ? reserva.Horario.Cancha.nombre : 'Cancha no disponible' %>
+                      <%= (reserva.Horario && reserva.Horario.Cancha) ? reserva.Horario.Cancha.nombre : 'Cancha no disponible' %>
                     </td>
                     <td><%= reserva.Horario ? reserva.Horario.fecha : '--' %></td>
                     <td>
-                      <%= reserva.Horario ? reserva.Horario.hora_inicio + ' - ' + reserva.Horario.hora_fin : '--' %>
+                      <%= reserva.Horario ? (reserva.Horario.hora_inicio + ' - ' + reserva.Horario.hora_fin) : '--' %>
                     </td>
                     <td>
                       <% if (reserva.estado === 'confirmada') { %>
